@@ -2,7 +2,11 @@
 <html lang="nl" data-theme="light" class="js js" style="--acc: #FF7600; --acc-bright: #FF9840; --acc-deep: #D16100; --acc-ink: #FFFFFF; --acc-glow: rgba(255,118,0,.3); --acc-glow-strong: rgba(255,118,0,.45); --acc-soft: rgba(255,118,0,.08); --glow1: rgba(255,118,0,.09); --glow2: rgba(255,118,0,.05); --amb1: rgba(255,118,0,.13);"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Biebblitzers — de Bieb Blitz Open 2026. Negen ronden 3+2 bliksemschaak. Schrijf je nu in.">
+<meta name="description" content="Za is weer de volgende Bieb blitz! 10 + 0 op Centrale Bibliotheek Rotterdam.">
+<meta property="og:title" content="Bieb blitz - 15 aug">
+<meta property="og:description" content="Za is weer de volgende Bieb blitz! 10 + 0 op Centrale Bibliotheek Rotterdam.">
+<meta name="twitter:title" content="Bieb blitz - 15 aug">
+<meta name="twitter:description" content="Za is weer de volgende Bieb blitz! 10 + 0 op Centrale Bibliotheek Rotterdam.">
 <meta name="theme-color" content="#F1F0ED" id="metaTheme">
 <meta name="color-scheme" content="light dark">
 <title>Biebblitzers · Blitz Open 2026</title>
@@ -483,8 +487,9 @@ body.signup-modal-open #mobileDrawer{display:none !important}
 #drawerScrim.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .3s var(--ease),visibility 0s}
 #mobileDrawer{display:flex;position:fixed;top:calc(.8rem + 46px + .55rem);left:.8rem;z-index:195;flex-direction:column;align-items:flex-start;gap:.55rem;width:auto;padding:0;background:none;border:0;box-shadow:none;transform:none;pointer-events:none;visibility:hidden;transition:visibility 0s linear .38s}
 #mobileDrawer.open{pointer-events:auto;visibility:visible;transition:visibility 0s}
-#mobileDrawer>*{width:11.8rem;height:46px;margin:0;flex:none;display:flex;align-items:center;justify-content:center;padding:0;background:var(--side);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.25);color:var(--bone-dim);opacity:0;transform:translateY(-24px) scale(.8);pointer-events:none;transition:opacity .3s var(--ease),transform .38s var(--ease),color .2s var(--ease),background-color .2s var(--ease),border-color .2s var(--ease)}
-.drawer-label{white-space:nowrap;margin-left:.55rem;font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:inherit;opacity:0;transform:translateX(-4px);transition:opacity .3s var(--ease) .12s,transform .3s var(--ease) .12s}
+#mobileDrawer>*{width:11.8rem;height:46px;margin:0;flex:none;display:flex;align-items:center;justify-content:flex-start;gap:.55rem;padding:0 .8rem;background:var(--side);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.25);color:var(--bone-dim);opacity:0;transform:translateY(-24px) scale(.8);pointer-events:none;transition:opacity .3s var(--ease),transform .38s var(--ease),color .2s var(--ease),background-color .2s var(--ease),border-color .2s var(--ease)}
+#mobileDrawer .snav-ic{flex:none}
+.drawer-label{white-space:nowrap;flex:1 1 auto;min-width:0;margin-left:0;text-align:center;overflow:hidden;text-overflow:ellipsis;font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:inherit;opacity:0;transform:translateX(-4px);transition:opacity .3s var(--ease) .12s,transform .3s var(--ease) .12s}
 #mobileDrawer.open .drawer-label{opacity:1;transform:none}
 #mobileDrawer.open>*{opacity:1;transform:none;pointer-events:auto}
 #mobileDrawer.open>*:nth-child(1){transition-delay:0s}
@@ -556,7 +561,7 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 }
 </style>
 </head>
-<body class="">
+<body class="" style="">
 <div class="ambient" aria-hidden="true"><i class="g1"></i><i class="g2"></i></div>
 <aside class="side">
 <nav class="side-nav" aria-label="Sections">
@@ -582,15 +587,15 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 </div>
 </aside>
 
-<button id="burger" data-action="drawer" aria-label="Menu" aria-expanded="false">
+<button id="burger" data-action="drawer" aria-label="Menu" aria-expanded="false" class="">
 <span class="burger-bar"></span><span class="burger-bar"></span><span class="burger-bar"></span>
 </button>
 <div id="mobileControls">
 <button type="button" class="lang-flag" data-action="lang" aria-label="Taal wisselen"><span class="flag-inner" id="langFlagInnerMobile"><svg viewBox="0 0 27 18" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="27" height="6" fill="#AE1C28"></rect><rect y="6" width="27" height="6" fill="#fff"></rect><rect y="12" width="27" height="6" fill="#21468B"></rect></svg></span></button>
 <button type="button" class="theme-toggle" data-action="theme" aria-label="Thema"><svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg><svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"></path></svg></button>
 </div>
-<div id="drawerScrim" data-action="drawer-close"></div>
-<aside id="mobileDrawer" aria-label="Menu">
+<div id="drawerScrim" data-action="drawer-close" class=""></div>
+<aside id="mobileDrawer" aria-label="Menu" class="">
 <button type="button" class="snav active" data-nav="navHome" data-action="nav" data-page="home" data-target="sec-tournament" data-close-drawer=""><span class="snav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M12 4v16M4 12h16"></path><path fill="currentColor" stroke="none" d="M12 4h6a2 2 0 0 1 2 2v6h-8V4zM4 12h8v8H6a2 2 0 0 1-2-2v-6z"></path></svg></span><span class="drawer-label" data-i18n="navInfo">Informatie</span></button>
 <button type="button" class="snav" data-nav="navSignup" data-action="nav" data-page="home" data-target="sec-signup" data-close-drawer=""><span class="snav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"></path><rect x="9" y="2.5" width="6" height="3.5" rx="1"></rect><path d="m9 14 2 2 4-4.5"></path></svg></span><span class="drawer-label" data-i18n="navSignup">Registratielijst</span></button>
 <button type="button" class="snav" data-nav="navAbout" data-action="nav" data-page="about" data-close-drawer=""><span class="snav-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 4 4.5v13c3 0 6 .5 8 2 2-1.5 5-2 8-2v-13c-3 0-6 .5-8 2v13"></path></svg></span><span class="drawer-label" data-i18n="navAbout">Over ons</span></button>
@@ -893,6 +898,47 @@ setTimeout(function(){ if(el.parentNode) D.toastRoot.removeChild(el); },350);
 }
 function canEdit(){ return !!BB.edit && BB.edit(); }
 function canRegister(){ return BB.edit ? !BB.edit() : true; }
+function updateShareMeta(){
+function txt(sel){ var el=document.querySelector(sel); return el ? el.textContent.trim() : ''; }
+function noDash(s){ return String(s||'').replace(/[—–]/g,'-').replace(/\s+/g,' ').trim(); }
+function parseDate(v){
+var tokens=String(v||'').trim().split(/\s+/).map(function(s){ return s.replace(/[.,;:]/g,''); }).filter(Boolean);
+var MONTHS=['jan','feb','maart','mar','apr','mei','may','jun','jul','aug','sep','okt','oct','nov','dec','januari','februari','march','april','june','july','august','september','october','november','december'];
+function isMonth(s){ return MONTHS.indexOf(s.toLowerCase())>=0; }
+var day='', num='', month='';
+for(var i=0;i<tokens.length;i++){
+var tok=tokens[i];
+if(!num && /\d{1,2}/.test(tok) && !/\d{4}/.test(tok)){ num=tok.replace(/\D/g,''); continue; }
+if(!month && isMonth(tok)){ month=tok.toLowerCase(); continue; }
+if(!day && /^[a-zA-Z]{2,}$/.test(tok) && !isMonth(tok)){ day=tok; continue; }
+}
+return {day:day, number:num, month:month};
+}
+function setMeta(attr, key, content){
+var sel=attr==='property' ? 'meta[property="'+key+'"]' : 'meta[name="'+key+'"]';
+var m=document.head.querySelector(sel);
+if(!m){ m=document.createElement('meta'); if(attr==='property'){ m.setAttribute('property',key); } else { m.setAttribute('name',key); } document.head.appendChild(m); }
+m.setAttribute('content', content);
+}
+var name=noDash(txt('.open-title'));
+if(!name) name=noDash(document.title);
+var p=parseDate(txt('[data-i18n="mDateV"]'));
+var time=noDash(txt('[data-i18n="mTcV"]'));
+var loc=noDash(txt('[data-i18n="mVenueV"]'));
+var title=name;
+if(p.number && p.month) title=name+' - '+p.number+' '+p.month;
+var desc;
+if(p.day){ desc=p.day+' is weer de volgende '+name+'!'; }
+else{ desc='De volgende '+name+'!'; }
+if(time){ desc+=' '+time; }
+if(loc){ desc+=' op '+loc; }
+desc+='.';
+setMeta('name','description',desc);
+setMeta('property','og:title',title);
+setMeta('property','og:description',desc);
+setMeta('name','twitter:title',title);
+setMeta('name','twitter:description',desc);
+}
 function fitTitle(){
 var el=document.querySelector('.open-title'); if(!el) return;
 el.style.fontSize='';
@@ -1330,8 +1376,11 @@ goNav:goNav, spy:spy, closeDrawer:closeDrawer,
 onSync:function(fn){ syncHook=fn; },
 on:function(ev,fn){ if(hooks[ev]) hooks[ev].push(fn); },
 emit:function(ev){ (hooks[ev]||[]).forEach(function(fn){ fn(); }); },
-edit:null, waEdit:null, theme:null, previewToggle:null, bake:null, settingsToggle:null, wallPick:null, wallClear:null
+edit:null, waEdit:null, theme:null, previewToggle:null, bake:null, settingsToggle:null, wallPick:null, wallClear:null,
+updateShareMeta:updateShareMeta
 };
+BB.on('render', function(){ setTimeout(updateShareMeta,0); });
+BB.on('lang', function(){ setTimeout(updateShareMeta,0); });
 cacheDom();
 if(!CFG.builder){ restoreTheme(); }
 bindEvents();
@@ -1365,7 +1414,7 @@ updateSubmitLock();
 sizeBoard(); fitTitle(); fitTicker();
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitTitle(); fitTicker(); });
 if(S.live){ load({shortCircuit:!!CFG.builder}); startPoll(); }
-spy(); updateParallax(); renderTally(); initTallyResize();
+spy(); updateParallax(); renderTally(); initTallyResize(); updateShareMeta();
 setTimeout(function(){ sizeBoard(); fitTitle(); fitTicker(); ensureAnim(D['page-home']); },300);
 })();
 </script>
