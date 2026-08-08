@@ -146,6 +146,12 @@ main{margin-left:var(--rail)}
 .brand-kicker{position:relative;z-index:2;display:flex;align-items:center;gap:.6em;font-family:var(--mono);font-size:.64rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--bone);margin:0;transform:none;background:color-mix(in srgb,var(--card-bg) 70%,transparent);border:1.5px solid var(--line);border-bottom-width:1.5px;border-radius:14px 14px 0 0;padding:.55em 1.15em .65em;cursor:pointer;transition:background-color .5s var(--ease),border-color .5s var(--ease),color .5s var(--ease),border-radius .35s var(--ease),margin-bottom .35s var(--ease),border-bottom-width .35s var(--ease)}
 .brand-kicker:hover{border-color:var(--acc)}
 .hero-blurb.collapsed .brand-kicker{display:inline-flex;border-bottom-width:1.5px;border-radius:10px;margin-bottom:0}
+.brand-kicker{padding-right:2.8em;}
+.brand-kicker::after{content:"";position:absolute;right:1.05em;top:50%;width:.58em;height:.58em;border-right:2px solid currentColor;border-bottom:2px solid currentColor;opacity:.72;pointer-events:none;transform:translateY(-50%) rotate(-45deg);transition:transform .3s var(--ease),opacity .2s var(--ease),color .2s var(--ease);}
+.hero-blurb:not(.collapsed) .brand-kicker::after{transform:translateY(-50%) rotate(45deg);}
+.brand-kicker:hover::after{color:var(--acc);opacity:1;}
+body.editing .brand-kicker::after,
+.brand-kicker[contenteditable="true"]::after{display:none;}
 .brand-kicker .kbolt{font-style:normal;transform:none}
 .brand-kicker .kdot{width:.6em;height:.6em;border-radius:50%;background:var(--acc);transform:none;animation:pulse 1.8s ease-in-out infinite}
 .brand-kicker .ktxt{transform:none}
@@ -470,9 +476,13 @@ main{margin-left:0}
 body:has(#mobileDrawer.open) #mobileControls>*{opacity:0;transform:translateX(24px) scale(.8);pointer-events:none}
 body:has(#signupModal.open) #burger{display:none}
 body:has(#signupModal.open) #mobileControls{display:none}
+body.signup-modal-open #burger,
+body.signup-modal-open #mobileControls,
+body.signup-modal-open #mobileDrawer{display:none !important}
 #drawerScrim{display:block;position:fixed;inset:0;z-index:190;background:rgba(8,9,11,.5);-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .3s var(--ease),visibility 0s linear .35s}
 #drawerScrim.open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .3s var(--ease),visibility 0s}
-#mobileDrawer{display:flex;position:fixed;top:calc(.8rem + 46px + .55rem);left:.8rem;z-index:195;flex-direction:column;align-items:flex-start;gap:.55rem;width:auto;padding:0;background:none;border:0;box-shadow:none;transform:none}
+#mobileDrawer{display:flex;position:fixed;top:calc(.8rem + 46px + .55rem);left:.8rem;z-index:195;flex-direction:column;align-items:flex-start;gap:.55rem;width:auto;padding:0;background:none;border:0;box-shadow:none;transform:none;pointer-events:none;visibility:hidden;transition:visibility 0s linear .38s}
+#mobileDrawer.open{pointer-events:auto;visibility:visible;transition:visibility 0s}
 #mobileDrawer>*{width:11.8rem;height:46px;margin:0;flex:none;display:flex;align-items:center;justify-content:center;padding:0;background:var(--side);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.25);color:var(--bone-dim);opacity:0;transform:translateY(-24px) scale(.8);pointer-events:none;transition:opacity .3s var(--ease),transform .38s var(--ease),color .2s var(--ease),background-color .2s var(--ease),border-color .2s var(--ease)}
 .drawer-label{white-space:nowrap;margin-left:.55rem;font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:inherit;opacity:0;transform:translateX(-4px);transition:opacity .3s var(--ease) .12s,transform .3s var(--ease) .12s}
 #mobileDrawer.open .drawer-label{opacity:1;transform:none}
@@ -546,7 +556,7 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 }
 </style>
 </head>
-<body class="" style="">
+<body class="">
 <div class="ambient" aria-hidden="true"><i class="g1"></i><i class="g2"></i></div>
 <aside class="side">
 <nav class="side-nav" aria-label="Sections">
@@ -594,7 +604,7 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 <h1 class="open-title" style=""><span class="t-line"><span class="tacc">B</span>ieb <span class="tacc">b</span>litz</span></h1>
 <div class="hero-blurb collapsed">
 <p class="brand-kicker" data-i18n-html="kicker"><span class="kdot"></span><span class="kbolt">1ste editie</span><span class="ktxt"></span></p>
-<p class="open-sub" data-i18n-html="heroSub">Welkom bij de biebblitz! Eerste editie van dit geweldig toernooi! Laten we het gezellig maken! Welkom bij de biebblitz! Eerste editie van dit geweldig toernooi! Laten we het gezellig maken!Welkom bij de biebblitz! Eerste editie van dit geweldig toernooi! Laten we het gezellig maken! Welkom bij de biebblitz!&nbsp;</p>
+<p class="open-sub" data-i18n-html="heroSub">Een klein proefeditie van een maandelijks toernooi dat gehouden zal worden in de bibliotheek. Het toernooi bevindt zich op de 3de verdieping.</p>
 </div>
 </div>
 <div class="black-card info-card anim" data-anim="" style="animation-delay: 70ms;">
@@ -607,11 +617,11 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 
 
 
-<div data-anim="" draggable="true" class="anim" style="animation-delay: 140ms;"><dt class="" data-i18n="mEntryL">Entreekosten</dt><dd class="acc" data-i18n="mEntryV">Gratis</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 210ms;"><dt class="" data-i18n="mPrizeL">Prijs</dt><dd class="" data-i18n="mPrizeV">The Usual Chess Hall of Fame</dd></div><div class="date-box anim" data-anim="" draggable="true" style="animation-delay: 280ms;"><dt class="" data-i18n="mDateL">Datum</dt><dd><button type="button" class="cal-btn" aria-label="Open in calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></button><span class="" data-i18n="mDateV">Za 15 aug 2026</span></dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mCloseL">Tijd</dt><dd class="" data-i18n="mCloseV">12:00 - 16:00</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mTcL">Speeltempo</dt><dd class="" data-i18n="mTcV">10 + 0</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mFormatL">Format</dt><dd class="" data-i18n="mFormatV">7 rounds · round robin</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mMaxL">Max. aantal spelers</dt><dd class="" id="infoMax">40</dd></div><div class="venue-box anim" data-anim="" draggable="true" style="animation-delay: 300ms;"><dt class="" data-i18n="mVenueL">Locatie</dt><dd><button type="button" class="map-btn" aria-label="Open in Google Maps"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg></button><span class="" data-i18n="mVenueV">Centrale Bibliotheek Rotterdam</span></dd></div></dl>
+<div data-anim="" draggable="true" class="anim" style="animation-delay: 140ms;"><dt class="" data-i18n="mEntryL">Entreekosten</dt><dd class="acc" data-i18n="mEntryV">Gratis</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 210ms;"><dt class="" data-i18n="mPrizeL">Prijs</dt><dd class="" data-i18n="mPrizeV">The Usual Chess Hall of Fame</dd></div><div class="date-box anim" data-anim="" draggable="true" style="animation-delay: 280ms;"><dt class="" data-i18n="mDateL">Datum</dt><dd><button type="button" class="cal-btn" aria-label="Open in calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></button><span class="" data-i18n="mDateV">Za 15 aug 2026</span></dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mCloseL">Tijd</dt><dd class="" data-i18n="mCloseV">12:00 - 16:00</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mTcL">Speeltempo</dt><dd class="" data-i18n="mTcV">10 + 0</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mFormatL">Format</dt><dd class="" data-i18n="mFormatV">Round Robin</dd></div><div data-anim="" draggable="true" class="anim" style="animation-delay: 300ms;"><dt class="" data-i18n="mMaxL">Max. aantal spelers</dt><dd class="" id="infoMax">40</dd></div><div class="venue-box anim" data-anim="" draggable="true" style="animation-delay: 300ms;"><dt class="" data-i18n="mVenueL">Locatie</dt><dd><button type="button" class="map-btn" aria-label="Open in Google Maps"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path></svg></button><span class="" data-i18n="mVenueV">Centrale Bibliotheek Rotterdam</span></dd></div></dl>
 <div class="info-foot">
 <div class="info-progress">
 <div class="capacity-bar" id="infoBar"><i></i><p class="capacity-full" id="infoFull" data-i18n="capFull" hidden="">Toernooi vol</p></div>
-<p class="capacity-text" id="infoText"><b>1</b>/40</p>
+<p class="capacity-text" id="infoText"><b>11</b>/40</p>
 </div>
 <div class="info-cta">
 <button class="btn-register btn-cta" type="button" data-action="signup-open"><span class="" data-i18n="registerBtn">Ik doe mee</span></button>
@@ -623,10 +633,10 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 <section id="sec-signup" class="sec">
 <div class="container">
 <div id="signupInlineSlot"></div>
-<div class="players-section anim" id="playersSection" data-anim="" style="animation-delay: 0ms;">
+<div class="players-section anim" id="playersSection" data-anim="" style="animation-delay: 300ms;">
 <div class="players-head-full">
 <h2><span class="" data-i18n="playersTitle">&nbsp;Registratielijst</span></h2>
-<span class="avg-pill" id="listStats"><span class="" data-i18n="avgRating">gem. rating</span> <b>1799</b></span><button type="button" class="refresh-btn" data-action="refresh" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class=""><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></button>
+<span class="avg-pill" id="listStats"><span class="" data-i18n="avgRating">gem. rating</span> <b>1498</b></span><button type="button" class="refresh-btn" data-action="refresh" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></button>
 </div>
 <div class="table-wrap-full">
 <table id="playersTable">
@@ -651,10 +661,10 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 <div id="page-about" class="page-hidden">
 <section id="sec-about" class="sec">
 <div class="container">
-<h1 class="about-title anim" data-i18n="aboutTitle" data-anim="" style="animation-delay: 0ms;">Over ons</h1>
-<div class="about-doc anim" data-anim="" style="animation-delay: 70ms;">
+<h1 class="about-title" data-i18n="aboutTitle" data-anim="">Over ons</h1>
+<div class="about-doc" data-anim="">
 
-<div id="aboutView" class="about-content" style="display:none"></div>
+<div id="aboutView" class="about-content" style="display: block;"><h2>Visie</h2><div><br></div><h2><p><span style="font-weight: normal;">Naast de anderhalve meter afstand en de mondkapjes bracht COVID nog iets teweeg: een gigantische <i data-path-to-node="2" data-index-in-node="97">'chess boom'</i>. Jongeren meldden zich massaal aan op platforms als Chess.com en Lichess, en bekende streamers zoals GothamChess, GMHikaru, BotezLive en Anna Cramling maakten schaken ineens ongekend populair.<br></span><span style="font-weight: normal;">Toch blijft die hype voornamelijk online hangen. Veel mensen associëren een schaakclub nog steeds met toernooiveteranen die in een muffe zaal tot ver na middernacht stil naar een bord staren.<br></span><span style="font-weight: normal;">Daar brengen wij graag verandering in! Via de WhatsApp-groep <span data-path-to-node="4" data-index-in-node="131">'Biebschakers 010'</span> spreek je gemakkelijk af met andere schakers in de bibliotheek of op toernooien. Ook willen we een interne competitie opzetten: net als bij een traditionele club, maar dan flexibel zodat het altijd in jouw agenda past.</span></p><p data-path-to-node="4"><br></p><p data-path-to-node="5">Laten we schaken weer gezellig en toegankelijk maken!</p></h2><div><br></div><h2>Contact</h2><div>Heb je vragen of suggesties?&nbsp; Laat het ons weten!</div><div>Email: <a href="biebschakers@gmail.com">biebschakers@gmail.com</a></div><div>Whatsapp: <a href="https://chat.whatsapp.com/HhMjedxJRSsBrWByr56Uu4?s=cl&amp;p=a&amp;ilr=1">Biebschakers 010</a><br><div><br></div></div></div>
 
 
 </div>
@@ -673,7 +683,7 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 </div>
 <div class="signup-scroll" id="signupScroll"><div class="black-card signup-card" id="signupCard">
 <div class="wa-row signup-head-row"><a class="wa-square wa-any" href="https://chat.whatsapp.com/HhMjedxJRSsBrWByr56Uu4?s=cl&amp;p=a&amp;ilr=1" target="_blank" rel="noopener" aria-label="WhatsApp"><svg class="wa-ic" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"></path></svg></a><span class="wa-ticker"><span class="wa-ticker-track crawl" style="--crawl-shift: -426px; --crawl-dur: 11.2s;"><span class="wa-ticker-text" data-i18n="waTicker">Word lid van de community voor toernooi-updates</span><span class="wa-ticker-text" data-i18n="waTicker" aria-hidden="true">Word lid van de community voor toernooi-updates</span><span class="wa-ticker-text" aria-hidden="true">Word lid van de community voor toernooi-updates</span><span class="wa-ticker-text" aria-hidden="true">Word lid van de community voor toernooi-updates</span></span></span><span class="wa-name">biebschakers 010</span></div>
-<div id="tallySlot" class="tally-slot" style="min-height:0;display:block;margin:0;padding:0;overflow:hidden;"><iframe src="https://tally.so/embed/Npx9XQ?alignLeft=1&amp;dynamicHeight=1" title="Tally" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" loading="lazy" allowtransparency="true" style="display:block;width:100%;height:100%;min-height:100%;border:0;margin:0;padding:0;background:transparent;"></iframe></div>
+<div id="tallySlot" class="tally-slot" style="min-height:0;display:block;margin:0;padding:0;overflow:hidden;"><iframe src="https://tally.so/embed/Npx9XQ?dynamicHeight=1&amp;alignLeft=1" title="Tally" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" loading="lazy" allowtransparency="true" style="display:block;width:100%;height:100%;min-height:100%;border:0;margin:0;padding:0;background:transparent;"></iframe></div>
 </div></div>
 </div>
 </div>
@@ -753,14 +763,24 @@ background:color-mix(in srgb,var(--card-bg) 88%,transparent);
 }
 }
 </script>
-<script id="appConfig">window.__CFG__={"builder":false,"form":{"url":"https://docs.google.com/forms/d/e/1FAIpQLSeUsJsP_CGo8UGzdz_i4N49mtMk3g6AwZHNrhtLyryrl-hI2w/formResponse","entries":{"firstName":"entry.400954750","lastName":"entry.1562837977","club":"entry.1832868721","rating":"entry.1258786765","email":"entry.67302214","notes":"entry.958956547","lang":"entry.70911267"}},"webapp":"https://script.google.com/macros/s/AKfycbyPzRWGr68KhE7JTzjVwLOmH6LTYTFF-JB5E8I1QO6pc46Zj1E-GswLarDozbo8J4DvqQ/exec","cap":40,"wa":"https://chat.whatsapp.com/HhMjedxJRSsBrWByr56Uu4?s=cl&p=a&ilr=1","tally":"https://tally.so/embed/Npx9XQ?alignLeft=1&dynamicHeight=1","overrides":{"en":{"t:footer":"","t:thPlayer":"name","t:unratedCheck":"I don't have a rating","t:playersTitle":" Registered","t:aboutTitle":"About us","t:navAbout":"About Us","p:phNotes":"e.g. wheelchair access, arriving late","p:phRating":"FIDE / KNSB / Online","p:phClub":"e.g. Biebschakers 010","t:lClub":"club","p:phFirst":"e.g. Max","p:phLast":"e.g. Euwe","t:t3":"","h:kicker":"<span class=\"kdot\"></span><span class=\"kbolt\"><span style=\"letter-spacing: 2.5344px; font-size: 0.72rem;\">1st edition</span></span><span style=\"letter-spacing: 2.5344px;\"></span><span class=\"ktxt\"></span>","t:t2":"Blitz","t:mVenueV":"Rotterdam Central Library","h:heroSub":"<br>","t:navInfo":"Info","t:mFormatV":"7 rounds · round robin","t:mEntryV":"Free","t:mPrizeL":"Prize","t:mPrizeV":"The Usual Chess Hall of Fame","t:mDateV":"Sat Aug 15th 2026","t:mTcV":"10 + 0","t:mCloseL":"time","t:mVenueL":"Location","t:mEntryL":"Entry Fee","t:mCloseV":"12:00 - 16:00","t:registerBtn":"Sign me up","t:t1":"<span class=\"tacc\">B</span>IEB&nbsp;<span class=\"tacc\">B</span>litz","t:waTicker":"Join our community for tournament updates","t:registerFull":"Join the waitlist","t:mMaxL":"Player max.","t:capFull":"Tournament full","t:waBrand":"biebschakers 010","t:lEmail":"E-mail"},"nl":{"t:t2":"Blitz","t:t3":"","t:mPrizeV":"The Usual Chess Hall of Fame","t:footer":"","t:playersTitle":" Registratielijst","t:aboutTitle":"Over ons","t:thPlayer":"naam","p:phNotes":"bijv. rolstoel, later aanwezig","p:phRating":"FIDE / KNSB / Online","t:navAbout":"Over ons","p:phClub":"bijv. Biebschakers 010","t:lClub":"club","t:registerBtn":"Ik doe mee","h:kicker":"<span class=\"kdot\"></span><span class=\"kbolt\">1ste editie</span><span class=\"ktxt\"></span>","t:mVenueV":"Centrale Bibliotheek Rotterdam","t:navInfo":"Informatie","t:navSignup":"Registratielijst","h:heroSub":"Welkom bij de biebblitz! Eerste editie van dit geweldig toernooi! Laten we het gezellig maken! Welkom bij de biebblitz! Eerste editie van dit geweldig toernooi! Laten we het gezellig maken!Welkom bij de biebblitz! Eerste editie van dit geweldig toernooi! Laten we het gezellig maken! Welkom bij de biebblitz!&nbsp;","t:mTcV":"10 + 0","t:mEntryV":"Gratis","t:mPrizeL":"Prijs","t:mCloseV":"12:00 - 16:00","t:mFormatV":"7 rounds · round robin","p:phFirst":"bijv. Max","p:phLast":"bijv. Euwe","t:mCloseL":"Tijd","t:t1":"<span class=\"tacc\">B</span>ieb <span class=\"tacc\">b</span>litz","t:mDateV":"Za 15 aug 2026","t:mEntryL":"Entreekosten","t:registerFull":"Zet me op de wachtlijst","t:waTicker":"Word lid van de community voor toernooi-updates","t:capFull":"Toernooi vol","t:waBrand":"biebschakers 010","t:mMaxL":"Max. aantal spelers"}},"lang":"nl"};</script>
+<script id="appConfig">window.__CFG__={"builder":false,"form":{"url":"https://docs.google.com/forms/d/e/1FAIpQLSeUsJsP_CGo8UGzdz_i4N49mtMk3g6AwZHNrhtLyryrl-hI2w/formResponse","entries":{"firstName":"entry.400954750","lastName":"entry.1562837977","club":"entry.1832868721","rating":"entry.1258786765","email":"entry.67302214","notes":"entry.958956547","lang":"entry.70911267"}},"webapp":"https://script.google.com/macros/s/AKfycbyPzRWGr68KhE7JTzjVwLOmH6LTYTFF-JB5E8I1QO6pc46Zj1E-GswLarDozbo8J4DvqQ/exec","cap":40,"wa":"https://chat.whatsapp.com/HhMjedxJRSsBrWByr56Uu4?s=cl&p=a&ilr=1","tally":"https://tally.so/embed/Npx9XQ?dynamicHeight=1","overrides":{"en":{"t:footer":"","t:thPlayer":"name","t:unratedCheck":"I don't have a rating","t:playersTitle":" Registered","t:aboutTitle":"About us","t:navAbout":"About Us","p:phNotes":"e.g. wheelchair access, arriving late","p:phRating":"FIDE / KNSB / Online","p:phClub":"e.g. Biebschakers 010","t:lClub":"club","p:phFirst":"e.g. Max","p:phLast":"e.g. Euwe","t:t3":"","h:kicker":"<span class=\"kdot\"></span><span class=\"kbolt\"><span style=\"letter-spacing: 2.5344px; font-size: 0.72rem;\">1st edition</span></span><span style=\"letter-spacing: 2.5344px;\"></span><span class=\"ktxt\"></span>","t:t2":"Blitz","t:mVenueV":"Rotterdam Central Library","h:heroSub":"A small pilot edition of a monthly tournament that will be hosted in the library. The tournament takes place on the 3rd floor.","t:navInfo":"Info","t:mFormatV":"Round Robin","t:mEntryV":"Free","t:mPrizeL":"Prize","t:mPrizeV":"The Usual Chess Hall of Fame","t:mDateV":"Sat Aug 15th 2026","t:mTcV":"10 + 0","t:mCloseL":"time","t:mVenueL":"Location","t:mEntryL":"Entry Fee","t:mCloseV":"12:00 - 16:00","t:registerBtn":"Sign me up","t:t1":"<span class=\"tacc\">B</span>IEB&nbsp;<span class=\"tacc\">B</span>litz","t:waTicker":"Join our community for tournament updates","t:registerFull":"Join the waitlist","t:mMaxL":"Player max.","t:capFull":"Tournament full","t:waBrand":"biebschakers 010","t:lEmail":"E-mail"},"nl":{"t:t2":"Blitz","t:t3":"","t:mPrizeV":"The Usual Chess Hall of Fame","t:footer":"","t:playersTitle":" Registratielijst","t:aboutTitle":"Over ons","t:thPlayer":"naam","p:phNotes":"bijv. rolstoel, later aanwezig","p:phRating":"FIDE / KNSB / Online","t:navAbout":"Over ons","p:phClub":"bijv. Biebschakers 010","t:lClub":"club","t:registerBtn":"Ik doe mee","h:kicker":"<span class=\"kdot\"></span><span class=\"kbolt\">1ste editie</span><span class=\"ktxt\"></span>","t:mVenueV":"Centrale Bibliotheek Rotterdam","t:navInfo":"Informatie","t:navSignup":"Registratielijst","h:heroSub":"Een klein proefeditie van een maandelijks toernooi dat gehouden zal worden in de bibliotheek. Het toernooi bevindt zich op de 3de verdieping.","t:mTcV":"10 + 0","t:mEntryV":"Gratis","t:mPrizeL":"Prijs","t:mCloseV":"12:00 - 16:00","t:mFormatV":"Round Robin","p:phFirst":"bijv. Max","p:phLast":"bijv. Euwe","t:mCloseL":"Tijd","t:t1":"<span class=\"tacc\">B</span>ieb <span class=\"tacc\">b</span>litz","t:mDateV":"Za 15 aug 2026","t:mEntryL":"Entreekosten","t:registerFull":"Zet me op de wachtlijst","t:waTicker":"Word lid van de community voor toernooi-updates","t:capFull":"Toernooi vol","t:waBrand":"biebschakers 010","t:mMaxL":"Max. aantal spelers"}},"lang":"nl"};</script>
 <script id="runtime">
 (function(){
 'use strict';
 var CFG  = window.__CFG__ || {builder:false,form:{url:"",entries:{}},webapp:"",cap:64,wa:"",tally:"",overrides:{en:{},nl:{}},lang:"nl"};
 var DATA = JSON.parse(document.getElementById('appData').textContent);
 var I18N = DATA.i18n, FLAGS = DATA.flags;
-var POLL_MS = 3600000, CACHE_KEY = 'bb3_cache', CACHE_TIME_KEY = 'bb3_cache_time', CACHE_TTL = 3600000;
+var POLL_MS = 3600000, CACHE_TTL = 3600000;
+var CACHE_NS = (function(){
+  var s = 'v1|' + (CFG.webapp || '') + '|' + ((CFG.form && CFG.form.url) || '');
+  var h = 5381;
+  for (var i = 0; i < s.length; i++) { h = ((h * 33) ^ s.charCodeAt(i)) >>> 0; }
+  return h.toString(36);
+})();
+var CACHE_KEY = 'bb3_cache_' + CACHE_NS;
+var CACHE_TIME_KEY = 'bb3_cache_time_' + CACHE_NS;
+var THEME_KEY = 'bb3_theme_' + CACHE_NS;
+try{ localStorage.removeItem('bb3_cache'); localStorage.removeItem('bb3_cache_time'); localStorage.removeItem('bb3_theme'); }catch(e){}
 var REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 var S = {
 players:[], waitlist:[], loaded:false, live:!!CFG.webapp,
@@ -927,7 +947,7 @@ if(D.submitLabel && !D.submitBtn.classList.contains('working')) D.submitLabel.te
 }
 function finishLang(){
 applyWa(); render(); updatePill(); fitTicker();
-try{ localStorage.setItem('bb3_lang', S.lang); }catch(e){}
+if (CFG.builder) { try{ localStorage.setItem('bb3_lang', S.lang); }catch(e){} }
 BB.emit('lang');
 }
 function applyLang(){ applyText(); updateFlags(false); finishLang(); renderTally(); }
@@ -1099,6 +1119,7 @@ if(!canRegister() || S.signupOpen) return;
 S.signupOpen=true;
 closeDrawer();
 D.signupModal.classList.add('open'); D.signupModal.setAttribute('aria-hidden','false');
+document.body.classList.add('signup-modal-open');
 document.body.style.overflow='hidden';
 if(push!==false) history.pushState({m:'signup'},'');
 setTimeout(function(){ var f=$('fFirst'); if(f) try{ f.focus({preventScroll:true}); }catch(e){} },60);
@@ -1107,6 +1128,7 @@ function closeSignup(fromPop){
 if(!S.signupOpen) return;
 S.signupOpen=false;
 D.signupModal.classList.remove('open'); D.signupModal.setAttribute('aria-hidden','true');
+document.body.classList.remove('signup-modal-open');
 document.body.style.overflow='';
 if(!fromPop) history.back();
 }
@@ -1114,6 +1136,7 @@ function closeModalSilent(){
 if(!S.signupOpen) return;
 S.signupOpen=false;
 D.signupModal.classList.remove('open'); D.signupModal.setAttribute('aria-hidden','true');
+document.body.classList.remove('signup-modal-open');
 document.body.style.overflow='';
 }
 function setActiveNav(id){ $$('[data-nav]').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-nav')===id); }); }
@@ -1176,7 +1199,6 @@ for(var i=0;i<entries.length;i++){ if(entries[i].isIntersecting){ animateIn(entr
 secs.forEach(function(s){ io.observe(s); });
 }else secs.forEach(animateIn);
 }
-function armRegisterFlash(){var btn=document.querySelector('.btn-register');if(!btn)return;var mq=window.matchMedia?window.matchMedia('(max-width:960px)'):null;if(!mq||!mq.matches)return;var fired=false;function fire(){if(fired)return;fired=true;btn.classList.add('flash');}if('IntersectionObserver' in window){var io=new IntersectionObserver(function(entries){for(var i=0;i<entries.length;i++){if(entries[i].isIntersecting&&entries[i].intersectionRatio>=0.99){io.disconnect();fire();return;}}},{threshold:[0.6,1]});io.observe(btn);}else setTimeout(fire,1400);}
 function openDrawer(){
 D.mobileDrawer.classList.add('open'); D.drawerScrim.classList.add('open');
 D.burger.classList.add('open'); D.burger.setAttribute('aria-expanded','true');
@@ -1193,10 +1215,10 @@ var h=document.documentElement;
 var nx=(h.getAttribute('data-theme')==='dark')?'light':'dark';
 h.setAttribute('data-theme',nx);
 var mt=$('metaTheme'); if(mt) mt.setAttribute('content', nx==='dark'?'#14161A':'#F1F0ED');
-try{ localStorage.setItem('bb3_theme',nx); }catch(e){}
+try{ localStorage.setItem(THEME_KEY,nx); }catch(e){}
 }
 function restoreTheme(){
-var sv=null; try{ sv=localStorage.getItem('bb3_theme'); }catch(e){}
+var sv=null; try{ sv=localStorage.getItem(THEME_KEY); }catch(e){}
 if(sv==='light'||sv==='dark'){
 document.documentElement.setAttribute('data-theme',sv);
 var mt=$('metaTheme'); if(mt) mt.setAttribute('content', sv==='dark'?'#14161A':'#F1F0ED');
@@ -1209,6 +1231,7 @@ var txt=q ? q.textContent : '';
 window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(txt.trim()),'_blank','noopener');
 }
 function openCalendar(){ var MON={jan:0,feb:1,maart:2,mar:2,apr:3,april:3,mei:4,may:4,jun:5,juni:5,jul:6,juli:6,aug:7,sep:8,okt:9,oct:9,nov:10,dec:11}; function gt(sel){var e=document.querySelector(sel);return e?e.textContent.trim():'';} var dateTxt=gt('[data-i18n="mDateV"]'),timeTxt=gt('[data-i18n="mCloseV"]'),loc=gt('[data-i18n="mVenueV"]'); var tEl=document.querySelector('.open-title'),title=(tEl?tEl.textContent.trim():'Bieb Blitz')+' tournament'; var toks=dateTxt.split(/\s+/),year=null,day=null,month=-1,i,t; for(i=0;i<toks.length;i++){t=toks[i].toLowerCase();if(/^\d{4}$/.test(t)){year=+t;}else if(/^\d{1,2}$/.test(t)){day=parseInt(t,10);}else if(MON[t]!==undefined){month=MON[t];}} if(!year||!day||month<0){window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title),'_blank','noopener');return;} var times=timeTxt.match(/\d{1,2}:\d{2}/g)||[]; function mn(s){var p=s.split(':');return(+p[0])*60+(+p[1]);} var s0=times[0]?mn(times[0]):720,e0=times[1]?mn(times[1]):s0+120; var sd=new Date(year,month,day,Math.floor(s0/60),s0%60),ed=new Date(year,month,day,Math.floor(e0/60),e0%60); function pad(n){return n<10?'0'+n:''+n;} function gs(d){return d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(d.getHours())+pad(d.getMinutes())+'00';} var gurl='https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(title)+'&dates='+gs(sd)+'/'+gs(ed)+'&location='+encodeURIComponent(loc); if(/iPhone|iPad|iPod|Macintosh|Mac OS X/i.test(navigator.userAgent)){ function iesc(s){return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,');} var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//BiebBlitz//NL','BEGIN:VEVENT','UID:'+Date.now()+'@biebblitz','DTSTAMP:'+gs(new Date()),'DTSTART:'+gs(sd),'DTEND:'+gs(ed),'SUMMARY:'+iesc(title),'LOCATION:'+iesc(loc),'END:VEVENT','END:VCALENDAR'].join('\r\n'); try{var a=document.createElement('a');a.href='data:text/calendar;charset=utf8,'+encodeURIComponent(ics);a.download='bieb-blitz.ics';document.body.appendChild(a);a.click();document.body.removeChild(a);return;}catch(e){} } window.open(gurl,'_blank','noopener'); } function initMetaReorder(){
+if(!CFG.builder) return;
 var grid=document.querySelector('.meta-grid'); if(!grid) return;
 var dragEl=null;
 function items(){ return $$('.meta-grid>div'); }
@@ -1252,7 +1275,7 @@ case 'wall-clear':   if(BB.wallClear) BB.wallClear(); break; case 'refresh': if(
 }
 if(el.hasAttribute('data-close-drawer')) closeDrawer();
 });
-document.addEventListener('click', function(e){ if(canEdit()) return; var kick=e.target.closest && e.target.closest('.brand-kicker'); if(!kick) return; var hb=kick.closest('.hero-blurb'); if(!hb) return; e.preventDefault(); hb.classList.toggle('collapsed'); });
+document.addEventListener('click', function(e){ var allowMobileEditKick = window.matchMedia && window.matchMedia('(max-width:960px)').matches; if(canEdit() && !allowMobileEditKick) return; var kick=e.target.closest && e.target.closest('.brand-kicker'); if(!kick) return; var hb=kick.closest('.hero-blurb'); if(!hb) return; e.preventDefault(); hb.classList.toggle('collapsed'); });
 document.addEventListener('submit', function(e){
 if(e.target && e.target.id==='signupForm'){ e.preventDefault(); submitSignup(); }
 });
@@ -1292,7 +1315,7 @@ requestAnimationFrame(function(){ rzTick=false; sizeBoard(); fitTitle(); fitTick
 document.addEventListener('visibilitychange', function(){
 if(!document.hidden && S.live) load({shortCircuit:!!CFG.builder});
 });
-window.addEventListener('load', function(){ sizeBoard(); fitTitle(); fitTicker(); updateParallax(); }); var ot=document.querySelector('.open-title'); if(ot){ ot.addEventListener('input',fitTitle); ot.addEventListener('blur',fitTitle); var tc=null; try{tc=localStorage.getItem('bb3_title_color');}catch(e){} if(tc==='init'||tc==='last') S.titleMode=tc; }
+window.addEventListener('load', function(){ sizeBoard(); fitTitle(); fitTicker(); updateParallax(); }); var ot=document.querySelector('.open-title'); if(ot){ ot.addEventListener('input',fitTitle); ot.addEventListener('blur',fitTitle); var tc=null; if(CFG.builder){ try{tc=localStorage.getItem('bb3_title_color');}catch(e){} if(tc==='init'||tc==='last') S.titleMode=tc; } }
 }
 var hooks={render:[],lang:[]};
 var BB = window.BB = {
