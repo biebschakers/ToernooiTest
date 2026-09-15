@@ -2332,12 +2332,11 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
      .is-faded past the fade-out threshold and removes it below the
      fade-in threshold, and this transition animates between the two */
   #heroTitleRoll.is-faded { opacity: 0; }
-  /* boot gate: invisible (not faded) until alignDossierPeek publishes
-     --wall-mid/--wall-dy and flips html.wall-ready — from that frame the
-     banner's own entry animation plays at its real slot, never at a legacy
-     offset; the scroll fade below keeps using opacity as before */
-  #heroTitleRoll { visibility: hidden; }
-  html.wall-ready #heroTitleRoll { visibility: visible; }
+  /* boot gate: hidden until alignDossierPeek publishes --wall-mid/--wall-dy
+     and flips html.wall-ready; the flip then rides the opacity transition
+     above = one simple fade-in at the final position */
+  #heroTitleRoll { opacity: 0; }
+  html.wall-ready #heroTitleRoll:not(.is-faded) { opacity: 1; }
   /* mobile boot: every item lands in its final state at once and the board
      gets one calm fade instead of per-item staggered clip/translate reveals.
      This is also strictly less work than scroll-reveal on a phone: no
@@ -2349,6 +2348,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
   html.js .desc-box { opacity: 1; transform: none; transition: max-height var(--t-ctrl) var(--ease) 0s }
   html.js #dossier { opacity: 1; transition: none }
   html.js .sched-card .sched-row :is(.sched-t, .sched-l, .sched-dur, .sched-x, .sx-grip) { opacity: 1; transform: none; transition: none }
+  .hero-title-shell { animation: none }
   .clock-card.is-ready { animation: none }
   .clock-card.is-ready .btn-cta.enter { animation: none }
   html.js #board { animation: mboardFade .45s var(--ease) both }
@@ -2605,7 +2605,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
     </a>
     <a class="social social-li" href="https://lichess.org/@/Biebschakers_010" target="_blank" rel="noopener" data-action="li" aria-label="Lichess">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10.457 6.161a.237.237 0 0 0-.296.165c-.8 2.785 2.819 5.579 5.214 7.428.653.504 1.216.939 1.591 1.292 1.745 1.642 2.564 2.851 2.733 3.178a.24.24 0 0 0 .275.122c.047-.013 4.726-1.3 3.934-4.574a.257.257 0 0 0-.023-.06L18.204 3.407 18.93.295a.24.24 0 0 0-.262-.293c-1.7.201-3.115.435-4.5 1.425-4.844-.323-8.718.9-11.213 3.539C.334 7.737-.246 11.515.085 14.128c.763 5.655 5.191 8.631 9.081 9.532.993.229 1.974.34 2.923.34 3.344 0 6.297-1.381 7.946-3.85a.24.24 0 0 0-.372-.3c-3.411 3.527-9.002 4.134-13.296 1.444-4.485-2.81-6.202-8.41-3.91-12.749C4.741 4.221 8.801 2.362 13.888 3.31c.056.01.115 0 .165-.029l.335-.197c.926-.546 1.961-1.157 2.873-1.279l-.694 1.993a.243.243 0 0 0 .02.202l6.082 10.192c-.193 2.028-1.706 2.506-2.226 2.611-.287-.645-.814-1.364-2.306-2.803-.422-.407-1.21-.941-2.124-1.56-2.364-1.601-5.937-4.02-5.391-5.984a.239.239 0 0 0-.165-.295z"></path></svg>
-      <span class="bubble" style="--bshift: 0.8598875999450684px; margin-left: 0.859888px;"><span class="bubble-txt">Follow us on Lichess</span></span>
+      <span class="bubble" style="--bshift: 0px;"><span class="bubble-txt">Follow us on Lichess</span></span>
     </a>
   </div>
     
@@ -6861,7 +6861,7 @@ return for GET ?mode=read:
      free scrollY on scroll, so fast scrolling never forces layout and the
      sticky headers can't stutter open a gap. Hidden sections cache as empty. */
   let secTopDirty = true;
-  const secTop = { fieldTop: 0, fieldBot: 0, pairTop: 0, pairBot: 0, openTop: 0, dossierTop: 0, dossierBot: 0, aboutTop: 0, boardOff: 0, dossierDead: false, regHeadTop: 0, liveStickyTop: 0 };
+  const secTop = { fieldTop: 0, fieldBot: 0, pairTop: 0, pairBot: 0, openTop: 0, dossierTop: 0, dossierBot: 0, aboutTop: 0, boardOff: 0, dossierDead: false };
   function cacheSectionTops() {
     secTopDirty = false;
     const y = window.scrollY || 0;
@@ -6884,14 +6884,6 @@ return for GET ?mode=read:
     secTop.dossierDead = !d;
     const a = abs($('pageAbout')); secTop.aboutTop = a ? a.top : 0;
     secTop.boardOff = (D.board && D.board.offsetTop) || 0;
-    /* in-flow anchors for the two headers that pin at the top (the registration
-       title row sits first inside the reg chart; the live sticky head is the
-       first child of the pairings wrap). Anchored on stable in-flow boxes, not
-       on the sticky/parked elements themselves, whose rects move while pinned */
-    const rh = abs(document.querySelector('#field .chart'));
-    secTop.regHeadTop = rh ? rh.top : 0;
-    const lh = abs(document.querySelector('#pairings .wrap'));
-    secTop.liveStickyTop = lh ? lh.top : 0;
   }
   function pinnedHeaderActive() {
     if (secTopDirty) cacheSectionTops();
@@ -6954,13 +6946,7 @@ return for GET ?mode=read:
        state. */
     if (window.innerWidth <= 960) {
       if (secTopDirty) cacheSectionTops();
-      /* the fixed sign-up only yields once the section header pins at the top
-         (just under the menubar), not as soon as the list peeks into view */
-      const fld = $('field');
-      const head = (fld && fld.classList.contains('phase-hidden')) ? secTop.liveStickyTop : secTop.regHeadTop;
-      /* the reg header pins at --stick-top (56 on mobile, menubar shown or
-         slid away) — the sign-up yields from that pin onwards */
-      const atList = !editing && head > 0 && head - y <= 62;
+      const atList = !editing && secTop.fieldTop < y + vh && secTop.fieldBot > y;
       if (document.body.classList.contains('reg-at-list') !== atList) document.body.classList.toggle('reg-at-list', atList);
     } else if (document.body.classList.contains('reg-at-list')) {
       document.body.classList.remove('reg-at-list');
@@ -7456,42 +7442,20 @@ return for GET ?mode=read:
      there's no flash, then released immediately in the same init pass.
      one-shot, mobile only, skipped for reduced motion. */
   var dossierEntered = false;
-  /* the dossier keeps its own entry: pre-parked (no transition) one band below
-     its resting spot, then released into the 1s slide — the board's contents
-     fade is a separate CSS layer, so the two read as one gesture */
+  /* the dossier's boot motion is a single CSS fade on #board (mobile block in
+     styles.css) — no pre-parked translate, so the first paint is already the
+     final composition and nothing slides or jumps */
   function predossierEntry() {
-    if (dossierEntered || window.innerWidth >= 961) return;
-    if (home && home.classList.contains('page-hidden')) return;
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) { dossierEntered = true; return; }
+    dossierEntered = true;
     var board = document.getElementById('board');
-    if (!board) return;
-    board.style.transition = 'none';
-    board.style.transform = 'translateY(' + WALL_BAND + 'px)';
+    if (board) { board.style.transition = ''; board.style.transform = ''; }
   }
   function animateDossierEntry() {
-    if (dossierEntered) return;
+    /* nothing to animate: the CSS fade owns the entry; just make sure no
+       leftover inline transform/transition can offset the first frames */
     var board = document.getElementById('board');
-    if (!board) { dossierEntered = true; return; }
-    if (window.innerWidth >= 961) { dossierEntered = true; return; }
-    if (home && home.classList.contains('page-hidden')) {
-      board.style.transition = ''; board.style.transform = '';
-      dossierEntered = true; return;
-    }
+    if (board) { board.style.transition = ''; board.style.transform = ''; }
     dossierEntered = true;
-    alignDossierPeek();
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) { board.style.transition = ''; board.style.transform = ''; return; }
-    board.style.transition = 'transform 1s cubic-bezier(.22,1,.36,1)';
-    void board.offsetHeight;
-    board.style.transform = 'translateY(0px)';
-    var done = function () {
-      board.removeEventListener('transitionend', done);
-      board.style.transition = '';
-      board.style.transform = '';
-    };
-    board.addEventListener('transitionend', done);
-    setTimeout(done, 1200);
   }
   var rollState = 'full';
   var ticking = false;
@@ -7566,23 +7530,31 @@ return for GET ?mode=read:
   }
   /* the fixed mini sign-up must never cover table data: fade it out just
      before its rect would touch any visible board table */
-  /* the mini sign-up yields to table data only once the section header
-     actually pins at the very top — not while the table is still approaching.
-     doc-space tops come from the runtime cache (no per-frame rects); the
-     registration header and the live sticky header are the two pins */
-  function sectionHeadAtTop(tol) {
-    if (!window.Core || !window.Core.tops) return false;
-    var t = window.Core.tops();
-    var field = document.getElementById('field');
-    var head = (field && field.classList.contains('phase-hidden')) ? t.liveStickyTop : t.regHeadTop;
-    if (!(head > 0)) return false;
-    return head - (window.scrollY || 0) <= (tol || 6);
-  }
+  var CLEAR_BUF = 32;
+  /* the probed blocks are static page furniture — query once, reuse on every
+     scroll frame instead of re-running the selector each time */
+  var clearBlocks = null;
   function updateCtaClear() {
     if (!ctaEl || window.innerWidth < 961 || document.body.classList.contains('editing') ||
       card.classList.contains('spot-open') ||
       (home && home.classList.contains('page-hidden'))) { card.classList.remove('cta-clear'); return; }
-    card.classList.toggle('cta-clear', sectionHeadAtTop(6));
+    var btn = card.querySelector('.btn-cta') || ctaEl;
+    var cr;
+    try { cr = btn.getBoundingClientRect(); } catch (e) { return; }
+    if (!cr || cr.width <= 0 || cr.height <= 0) { card.classList.remove('cta-clear'); return; }
+    /* the sticky live header joins the tables: it pins across the full content
+       width at the same top the mini sign-up occupies */
+    if (!clearBlocks) clearBlocks = document.querySelectorAll('#board .chart, #pairings .live-sticky');
+    var blocks = clearBlocks;
+    var hit = false;
+    for (var i = 0; i < blocks.length; i++) {
+      var el = blocks[i];
+      if (el.getClientRects().length === 0) continue;
+      var r = el.getBoundingClientRect();
+      if (!r || r.width <= 0 || r.height <= 0) continue;
+      if (cr.bottom + CLEAR_BUF > r.top && cr.top - CLEAR_BUF < r.bottom && cr.right > r.left && cr.left < r.right) { hit = true; break; }
+    }
+    card.classList.toggle('cta-clear', hit);
   }
   /* an open subsection minimizes exactly like the main card — it rolls up
      (height + --roll fade) and unveils the sign-up button — until the card
