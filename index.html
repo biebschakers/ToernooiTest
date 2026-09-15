@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" class="js" style="--flame: #FF4F00; --flame-2: #FF7B40; --flame-ink: #FFFFFF; --fglow-2: rgba(255,79,0,.5); --fsoft: rgba(255,79,0,.08); --zebra-h: rgba(255,79,0,.07); --rail-w: 192px;"><head>
+<html lang="en" data-theme="dark" class="js wall-ready" style="--flame: #FF4F00; --flame-2: #FF7B40; --flame-ink: #FFFFFF; --fglow-2: rgba(255,79,0,.5); --fsoft: rgba(255,79,0,.08); --zebra-h: rgba(255,79,0,.07); --rail-w: 192px;"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="There's a rapid tournament in the Delfshaven Library this saturday!">
@@ -298,7 +298,7 @@ body.preview .hide-reset-wrap { display: none !important }
   html.js #dossier, html.js .rv { opacity: 1 !important; clip-path: none !important; transform: none !important; transition: none !important; animation: none !important }
   html.js .sched-card .sched-row :is(.sched-t, .sched-l, .sched-dur, .sched-x, .sx-grip) { opacity: 1 !important; transform: none !important; transition: none !important }
   .clock-card { position: static !important; width: auto !important; margin: 0 0 1.5rem !important; box-shadow: none !important; transform: none !important; opacity: 1 !important; animation: none !important }
-  body:not(.editing) #ccTopSlot .cc-cta { position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important }
+  body:not(.editing) #pageHome > .cc-cta { position: static !important; opacity: 1 !important; visibility: visible !important; transform: none !important }
   main { margin-left: 0 !important }
   body { overflow: visible !important }
 }
@@ -2231,7 +2231,7 @@ body.editing #mFab { display: none; }
   .clock-card { width: calc(100% - 2.2rem) }
 }
 /* ═══════════════════ CROSSFADE / MOTION / MODES ═══════════════════ */
-body.join-open #mBar, body.join-open #drawer, body.join-open #mFab, body.join-open #ccTopSlot .cc-cta { display: none !important }
+body.join-open #mBar, body.join-open #drawer, body.join-open #mFab, body.join-open #pageHome > .cc-cta { display: none !important }
 @media(prefers-reduced-motion:reduce) {
   html { scroll-behavior: auto }
   *, *::before, *::after { animation: none !important; transition: none !important }
@@ -2284,12 +2284,13 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
   #open .open-grid { width: 100%; margin: 0; padding: 0 }
   .clock-card { width: calc(100% - 2.4rem); margin: 0 auto 2.2rem; padding: 1.05rem 1.1rem 1.2rem }
   /* mobile layout: the sign-up button floats as a fixed bottom call-to-action
-     (full width); the capacity block sits at the very top of the dossier.
-     what remains of the info card (the rows) lives below the overview,
-     above good to know. the runtime relocates the nodes
-     (InfoCard.placeCardLayout) */
+     (full width, parked as a direct child of #pageHome — OUTSIDE #board, so
+     the board's entry transform can never become its containing block; see
+     InfoCard.placeCardLayout); the capacity block sits at the very top of the
+     dossier. what remains of the info card (the rows) lives below the
+     overview, above good to know. */
   .cc-top-slot { display: block; margin: 0 0 1.6rem }
-  body:not(.editing) #ccTopSlot .cc-cta {
+  body:not(.editing) #pageHome > .cc-cta {
     position: fixed; left: 1.2rem; right: 1.2rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px)); z-index: 180;
     width: auto; max-width: 440px; margin: 0 auto;
     opacity: 1; visibility: visible; pointer-events: auto;
@@ -2297,11 +2298,11 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
   }
   /* the fixed CTA fades out while the registration list owns the viewport
      (body.reg-at-list, toggled by onScrollFx in runtime.js) */
-  body.reg-at-list:not(.editing) #ccTopSlot .cc-cta {
+  body.reg-at-list:not(.editing) #pageHome > .cc-cta {
     opacity: 0; visibility: hidden; pointer-events: none;
     transition: opacity var(--t-ctrl) var(--ease), visibility 0s linear var(--t-ctrl);
   }
-  #ccTopSlot .cc-cta .btn-cta { width: 100%; margin: 0 }
+  #pageHome > .cc-cta .btn-cta { width: 100%; margin: 0 }
   /* standalone capacity block: flat, no card panel or top divider */
   #ccTopSlot .cc-cap { margin-top: 1.1rem; border-top: 0; padding: .2rem 0 0 }
   #ccTopSlot .cc-cap::before { display: none }
@@ -2350,24 +2351,25 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
   html.js #dossier { opacity: 1; transition: none }
   html.js .sched-card .sched-row :is(.sched-t, .sched-l, .sched-dur, .sched-x, .sx-grip) { opacity: 1; transform: none; transition: none }
   .clock-card.is-ready { animation: none }
-  /* the fixed sign-up's own entry: a smooth modern "heads up" — the whole
-     unit rises from below the screen edge into its dock, immediately at
-     boot. backwards fill only, so the scroll fade (opacity on this same
-     node) keeps full control once the entry has played */
-  #ccTopSlot .cc-cta { animation: ctaHeadsUp .6s cubic-bezier(.22, 1, .36, 1) backwards }
-  @keyframes ctaHeadsUp {
-    from { opacity: 0; transform: translateY(calc(100% + 2.5rem)) }
-    to   { opacity: 1; transform: none }
-  }
-  html.js #board { animation: mboardFade .45s var(--ease) both }
+  /* the fixed sign-up button enters exactly like the desktop one (a 14px
+     fade-up in place), but starts right at boot with no delay. backwards
+     fill keeps it hidden on the first frame, and the animation restarts on
+     its own whenever the home page is shown again. */
+  #pageHome > .cc-cta .btn-cta.enter { animation: ctaIn var(--t-reveal) var(--ease) backwards }
+  html.js #board { animation: mboardFade var(--t-reveal) var(--ease-out) both }
   @keyframes mboardFade { from { opacity: 0 } to { opacity: 1 } }
   /* the builder needs the title in flow (so it is selectable/editable) */
   body.editing #heroTitleRoll { position: static; transform: none; pointer-events: auto; }
   #open .open-veil { display: none }
   .cc-ov-slot { display: block }
   /* the rows read as a plain list aligned with the overview content —
-     no card background, border or inset */
-  #ccOvSlot .clock-card { width: 100%; margin: 1.3rem 0 0; padding: 0; background: none; border: 0; border-radius: 0 }
+     no card background, border or inset. They also rise+fade in right at
+     boot (no clock-ready wait), so the info card lands with the rest of the
+     first screen instead of arriving a beat later. */
+  #ccOvSlot .clock-card {
+    width: 100%; margin: 1.3rem 0 0; padding: 0; background: none; border: 0; border-radius: 0;
+    opacity: 1; transform: none; animation: ccRise var(--t-reveal) var(--ease-out) backwards;
+  }
   html[data-theme="dark"] #ccOvSlot .clock-card { background: none }
   #ccOvSlot .cc-row { padding-left: 0; padding-right: 0 }
   /* mobile info card: rows only (sign-up button + capacity bar moved to the
@@ -2577,7 +2579,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
 }</style>
 </head>
 <body class="preview">
-<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<style>::-webkit-scrollbar{width:0px; height:3px;} ::-webkit-scrollbar-thumb{background-color:#c1c1c1;} ::-webkit-scrollbar-thumb:hover{background-color:#666;} *{scrollbar-width:none!important;}</style><div class="my_noscrollbar_scroll_bar_iframe" data-name="iframe_sb"></div><div style="opacity: 1;"></div><!-- ═══════════════════ SIDEBAR ═══════════════════ -->
 <aside class="rail">
   <div class="rail-logo" id="railLogo" tabindex="0" role="button" aria-label="Home" title="Home">
     <span class="rail-logo-stack">
@@ -2609,11 +2611,11 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
     <div class="social-row">
     <a class="social social-ig" href="https://www.instagram.com/biebschakers010/" target="_blank" rel="noopener" data-action="ig" aria-label="Instagram">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
-      <span class="bubble" style="--bshift: 44.78656005859375px; margin-left: 44.7866px;"><span class="bubble-txt">Follow us on instagram</span></span>
+      <span class="bubble"><span class="bubble-txt">Follow us on instagram</span></span>
     </a>
     <a class="social social-li" href="https://lichess.org/@/Biebschakers_010" target="_blank" rel="noopener" data-action="li" aria-label="Lichess">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10.457 6.161a.237.237 0 0 0-.296.165c-.8 2.785 2.819 5.579 5.214 7.428.653.504 1.216.939 1.591 1.292 1.745 1.642 2.564 2.851 2.733 3.178a.24.24 0 0 0 .275.122c.047-.013 4.726-1.3 3.934-4.574a.257.257 0 0 0-.023-.06L18.204 3.407 18.93.295a.24.24 0 0 0-.262-.293c-1.7.201-3.115.435-4.5 1.425-4.844-.323-8.718.9-11.213 3.539C.334 7.737-.246 11.515.085 14.128c.763 5.655 5.191 8.631 9.081 9.532.993.229 1.974.34 2.923.34 3.344 0 6.297-1.381 7.946-3.85a.24.24 0 0 0-.372-.3c-3.411 3.527-9.002 4.134-13.296 1.444-4.485-2.81-6.202-8.41-3.91-12.749C4.741 4.221 8.801 2.362 13.888 3.31c.056.01.115 0 .165-.029l.335-.197c.926-.546 1.961-1.157 2.873-1.279l-.694 1.993a.243.243 0 0 0 .02.202l6.082 10.192c-.193 2.028-1.706 2.506-2.226 2.611-.287-.645-.814-1.364-2.306-2.803-.422-.407-1.21-.941-2.124-1.56-2.364-1.601-5.937-4.02-5.391-5.984a.239.239 0 0 0-.165-.295z"></path></svg>
-      <span class="bubble" style="--bshift: 0.30600571632385254px; margin-left: 0.306006px;"><span class="bubble-txt">Follow us on Lichess</span></span>
+      <span class="bubble" style="--bshift: 0px;"><span class="bubble-txt">Follow us on Lichess</span></span>
     </a>
   </div>
     
@@ -2630,7 +2632,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
 <!-- ═══════════════════ SITE POPOVER ═══════════════════ -->
 
 <!-- ═══════════════════ MOBILE CHROME ═══════════════════ -->
-<div id="mBar">
+<div id="mBar" class="">
   <button id="burger" data-action="drawer" aria-label="Menu" aria-expanded="false">
     <span class="bar"></span><span class="bar"></span><span class="bar"></span>
   </button>
@@ -2668,7 +2670,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
       <div class="wrap open-grid">
         <div class="hero-title-roll" id="heroTitleRoll">
           <div class="hero-title-shell">
-            <h1 class="ttl hero-title" id="ttl"><span class="">010 Rapid OPEN</span></h1>
+            <h1 class="ttl hero-title" id="ttl" style=""><span class="">010 Rapid OPEN</span></h1>
           </div>
         </div>
       </div>
@@ -2676,6 +2678,8 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
     </section>
     <!-- INFO CARD: fixed corner card on desktop; on mobile the runtime moves
          it into the overview (InfoCard.placeCardLayout) -->
+    
+    <!-- legacy spacer (kept harmless; hidden by CSS) -->
     <div class="clock-card" id="clockCard" data-state="full">
       <div class="cc-front">
         <div class="cc-roll" style="">
@@ -2706,7 +2710,8 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
               <span class="v" data-i18n="fTempoV">10 + 0</span>
               <span class="arr" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path></svg></span>
             </a></div>
-          <div class="cc-cap" data-goto="field">
+          
+        <div class="cc-cap" data-goto="field">
             <div class="cap-track">
               <div class="cap-bar" id="capBar"><i id="capFill" aria-hidden="true" style="width: 0%;"></i><span class="cap-full-txt" id="capFullTxt" data-i18n="capFullTxt">list full</span></div>
             </div>
@@ -2775,15 +2780,14 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
               </span>
               <span class="live-pill" id="phasePill" hidden=""><i aria-hidden="true"></i><span id="phasePillTxt">Live</span></span>
             </div>
-          </div>
-        </div>
-        <div class="cc-cta" style="">
+          </div></div>
+        
+      <div class="cc-cta" style="">
           <button class="btn btn-cta enter" type="button" data-action="join">
             <span id="ctaLbl"><span class="cta-txt" data-i18n="join">Register</span><span class="cta-fee"> (€5,00)</span></span><span class="cta-reveal" aria-hidden="true"><span id="ctaHover">Sign me up!</span></span>
           </button>
           
-        </div>
-      </div>
+        </div></div>
       <!-- mobile spot view: the time/date rows park the overview schedule or
            calendar here (see openSpotView in runtime.js); back returns it -->
       <div class="cc-spotview" id="ccSpotView" hidden="">
@@ -2799,9 +2803,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
           <span data-i18n="calAdd">Add to calendar</span>
         </button>
       </div>
-    </div>
-    <!-- legacy spacer (kept harmless; hidden by CSS) -->
-    <div class="cc-spacer" aria-hidden="true"></div>
+    </div><div class="cc-spacer" aria-hidden="true"></div>
     <div class="join-view" id="joinWin">
       <div class="join-head">
         <button type="button" class="join-back" data-action="joinClose" aria-label="Terug">
@@ -2824,7 +2826,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
                whose third row is the rules link) right · day (calendar +
                schedule, left) · place (map + contact + amenities), right. -->
           <div class="dz-head">
-            <div class="dz-head-l">
+            <div class="dz-head-l" style="">
               <div class="ov-intro">
                 <h2 class="about-title" data-i18n="secInfo">Overview</h2>
                 <div class="desc-box rv" id="descBox" tabindex="0">
@@ -2924,7 +2926,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
       <section id="field" class="sec">
         <div class="wrap">
           <div class="chart rv" style="--d:.12s">
-            <table id="mainTable">
+            <table id="mainTable" class="">
               <thead>
               <tr class="reg-top-row"><th colspan="4"><div class="reg-top rv" style="--d:.11s">
                 <div class="reg-cell reg-left reg-title-cell">
@@ -3086,7 +3088,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
       </div>
     </section>
   </div>
-</main><style>::-webkit-scrollbar{width:0px; height:3px;} ::-webkit-scrollbar-thumb{background-color:#c1c1c1;} ::-webkit-scrollbar-thumb:hover{background-color:#666;} *{scrollbar-width:none!important;}</style><div class="my_noscrollbar_scroll_bar_iframe" data-name="iframe_sb"></div><div style="opacity: 1;"></div>
+</main>
 <!-- ═══════════════════ MODALS: press texts · amenities · crop ═══════════════════ -->
 
 
@@ -7362,7 +7364,12 @@ return for GET ?mode=read:
   function placeCardLayout() {
     if (!card || !topSlot || !ovSlot || !cardHome) return;
     if (window.innerWidth < 961) {
-      if (ctaEl && ctaEl.parentNode !== topSlot) topSlot.appendChild(ctaEl);
+      /* the CTA is a viewport-fixed dock: it must NOT live inside #board,
+         whose entry transform would otherwise become its containing block and
+         park it (bottom: 1rem of the board's full height) far off-screen while
+         the very animation that introduces it plays. Parking it in #pageHome
+         keeps it truly fixed, so its entry is visible the moment it starts. */
+      if (ctaEl && ctaEl.parentNode !== cardHome) cardHome.appendChild(ctaEl);
       if (capEl && capEl.parentNode !== topSlot) topSlot.appendChild(capEl);
       if (card.parentNode !== ovSlot) ovSlot.appendChild(card);
     } else {
@@ -7497,7 +7504,7 @@ return for GET ?mode=read:
     alignDossierPeek();
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduced) { board.style.transition = ''; board.style.transform = ''; return; }
-    board.style.transition = 'transform 1s cubic-bezier(.22,1,.36,1)';
+    board.style.transition = 'transform var(--t-reveal) var(--ease-morph)';
     void board.offsetHeight;
     board.style.transform = 'translateY(0px)';
     var done = function () {
@@ -7506,7 +7513,7 @@ return for GET ?mode=read:
       board.style.transform = '';
     };
     board.addEventListener('transitionend', done);
-    setTimeout(done, 1200);
+    setTimeout(done, 900);
   }
   var rollState = 'full';
   var ticking = false;
