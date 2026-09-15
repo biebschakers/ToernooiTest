@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" class="js" style="--flame: #FF4F00; --flame-2: #FF7B40; --flame-ink: #FFFFFF; --fglow-2: rgba(255,79,0,.5); --fsoft: rgba(255,79,0,.08); --zebra-h: rgba(255,79,0,.07); --rail-w: 192px;"><head>
+<html lang="en" data-theme="dark" class="js wall-ready" style="--flame: #FF4F00; --flame-2: #FF7B40; --flame-ink: #FFFFFF; --fglow-2: rgba(255,79,0,.5); --fsoft: rgba(255,79,0,.08); --zebra-h: rgba(255,79,0,.07); --rail-w: 192px;"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="There's a rapid tournament in the Delfshaven Library this saturday!">
@@ -1386,6 +1386,20 @@ html.js #dateCard .cal-d.cal-hi::before { transform: translate(-50%, -50%) scale
 html.js #dateCard.in .cal-d.cal-hi { color: var(--flame-ink); font-weight: 700; }
 html.js #dateCard.in .cal-d.cal-hi .cal-n { transform: scale(1); }
 html.js #dateCard.in .cal-d.cal-hi::before { transform: translate(-50%, -50%) scale(1); }
+/* the event-day pop is earned, not boot decor: until the visitor opens the
+   calendar from the info card for the first time (runtime flips html.cal-armed)
+   the overview highlight renders fully settled — no pop on page load */
+html.js:not(.cal-armed) #dateCard .cal-d.cal-hi { color: var(--flame-ink); font-weight: 700; transition: none }
+html.js:not(.cal-armed) #dateCard .cal-d.cal-hi .cal-n { transform: none; transition: none }
+html.js:not(.cal-armed) #dateCard .cal-d.cal-hi::before { transform: translate(-50%, -50%); transition: none }
+/* the parked mirror plays the pop once, on that first open; later opens add
+   .cal-in immediately and render settled */
+html.js.cal-armed #ccSpotSlot .cal-d.cal-hi { --cal-dur: .58s; --cal-delay: .12s; color: var(--mut); font-weight: 500; transition: color 0s linear var(--cal-delay), font-weight 0s linear var(--cal-delay); }
+html.js.cal-armed #ccSpotSlot .cal-d.cal-hi .cal-n { transform: scale(.6857); transition: transform var(--cal-dur) var(--spring) var(--cal-delay); }
+html.js.cal-armed #ccSpotSlot .cal-d.cal-hi::before { transform: translate(-50%, -50%) scale(0); transition: transform var(--cal-dur) var(--spring) var(--cal-delay); }
+html.js.cal-armed #ccSpotSlot .cal-in .cal-d.cal-hi { color: var(--flame-ink); font-weight: 700; }
+html.js.cal-armed #ccSpotSlot .cal-in .cal-d.cal-hi .cal-n { transform: scale(1); }
+html.js.cal-armed #ccSpotSlot .cal-in .cal-d.cal-hi::before { transform: translate(-50%, -50%) scale(1); }
 /* contact + rules: borderless link rows; each row just underlines + accents
    its glyph on its own hover — the parent card has no hover card */
 .ov-link { position: relative; display: flex; align-items: center; gap: .7rem; padding: .74rem .2rem; border: 0; border-radius: 0; background: none; color: var(--ink); font: 600 .86rem/1.3 var(--body); word-break: break-all; text-decoration: none }
@@ -2302,7 +2316,10 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
        vertical middle (--wall-mid, one gap above the dossier's top edge) and
        half the banner height (--wall-dy), so the bookmark frames the wallpaper
        band whatever the screen or the peek height */
-    top: var(--wall-mid, 5.4rem);
+    /* no legacy fallback offset: the banner boots invisible (below) and only
+       fades in once the alignment has published its real slot, so it can
+       never paint at an old position and jump */
+    top: var(--wall-mid, 0px);
     transform: translateY(var(--wall-dy, 0px));
     left: 0;
     z-index: 6;
@@ -2315,6 +2332,27 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
      .is-faded past the fade-out threshold and removes it below the
      fade-in threshold, and this transition animates between the two */
   #heroTitleRoll.is-faded { opacity: 0; }
+  /* boot gate: hidden until alignDossierPeek publishes --wall-mid/--wall-dy
+     and flips html.wall-ready; the flip then rides the opacity transition
+     above = one simple fade-in at the final position */
+  #heroTitleRoll { opacity: 0; }
+  html.wall-ready #heroTitleRoll:not(.is-faded) { opacity: 1; }
+  /* mobile boot: every item lands in its final state at once and the board
+     gets one calm fade instead of per-item staggered clip/translate reveals.
+     This is also strictly less work than scroll-reveal on a phone: no
+     intersection observers, no per-frame pending-reveal loop, no transform
+     layers — out-of-view items are simply already rendered. The description
+     box keeps its max-height tween (click-to-expand) — only the reveal
+     transition goes. */
+  html.js .rv:not(.desc-box) { opacity: 1; transform: none; transition: none }
+  html.js .desc-box { opacity: 1; transform: none; transition: max-height var(--t-ctrl) var(--ease) 0s }
+  html.js #dossier { opacity: 1; transition: none }
+  html.js .sched-card .sched-row :is(.sched-t, .sched-l, .sched-dur, .sched-x, .sx-grip) { opacity: 1; transform: none; transition: none }
+  .hero-title-shell { animation: none }
+  .clock-card.is-ready { animation: none }
+  .clock-card.is-ready .btn-cta.enter { animation: none }
+  html.js #board { animation: mboardFade .45s var(--ease) both }
+  @keyframes mboardFade { from { opacity: 0 } to { opacity: 1 } }
   /* the builder needs the title in flow (so it is selectable/editable) */
   body.editing #heroTitleRoll { position: static; transform: none; pointer-events: auto; }
   #open .open-veil { display: none }
@@ -2567,7 +2605,7 @@ body.editing :is(.editable, [data-i18n], [data-edit]).is-empty::before { content
     </a>
     <a class="social social-li" href="https://lichess.org/@/Biebschakers_010" target="_blank" rel="noopener" data-action="li" aria-label="Lichess">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10.457 6.161a.237.237 0 0 0-.296.165c-.8 2.785 2.819 5.579 5.214 7.428.653.504 1.216.939 1.591 1.292 1.745 1.642 2.564 2.851 2.733 3.178a.24.24 0 0 0 .275.122c.047-.013 4.726-1.3 3.934-4.574a.257.257 0 0 0-.023-.06L18.204 3.407 18.93.295a.24.24 0 0 0-.262-.293c-1.7.201-3.115.435-4.5 1.425-4.844-.323-8.718.9-11.213 3.539C.334 7.737-.246 11.515.085 14.128c.763 5.655 5.191 8.631 9.081 9.532.993.229 1.974.34 2.923.34 3.344 0 6.297-1.381 7.946-3.85a.24.24 0 0 0-.372-.3c-3.411 3.527-9.002 4.134-13.296 1.444-4.485-2.81-6.202-8.41-3.91-12.749C4.741 4.221 8.801 2.362 13.888 3.31c.056.01.115 0 .165-.029l.335-.197c.926-.546 1.961-1.157 2.873-1.279l-.694 1.993a.243.243 0 0 0 .02.202l6.082 10.192c-.193 2.028-1.706 2.506-2.226 2.611-.287-.645-.814-1.364-2.306-2.803-.422-.407-1.21-.941-2.124-1.56-2.364-1.601-5.937-4.02-5.391-5.984a.239.239 0 0 0-.165-.295z"></path></svg>
-      <span class="bubble"><span class="bubble-txt">Follow us on Lichess</span></span>
+      <span class="bubble" style="--bshift: 0px;"><span class="bubble-txt">Follow us on Lichess</span></span>
     </a>
   </div>
     
@@ -6187,6 +6225,11 @@ return for GET ?mode=read:
   }
   function animateReveals(root) {
     const els = (root || document).querySelectorAll('.rv:not(.in)');
+    /* mobile renders every item in its final state at once (the mobile CSS
+       also drops the reveal transitions in favour of one board fade): keeping
+       observers + a per-frame pending loop for items that would only stagger
+       in later is strictly more work on a phone, so reveal immediately */
+    if (isMobileBar()) { els.forEach((el) => el.classList.add('in')); return; }
     if (!('IntersectionObserver' in window)) { els.forEach((el) => el.classList.add('in')); return; }
     if (!revealIO) {
       revealIO = new IntersectionObserver((entries) => {
@@ -6393,6 +6436,10 @@ return for GET ?mode=read:
      Same behavior on desktop and mobile. */
   let spotWhat = null;
   let spotSwapT = 0, spotCloseT = 0, spotGen = 0;
+  /* the calendar's event-day pop plays once per session: the first time the
+     visitor opens the calendar from the info card. before that the highlight
+     renders settled (CSS gates on html.cal-armed) */
+  let calHiArmed = false, calHiPlayed = false;
   /* a close whose slide-out is still playing: its mirrors are still in the slot */
   let spotClosing = null;
   /* slide prep: drops transient classes, retires a stale swap.
@@ -6529,7 +6576,17 @@ return for GET ?mode=read:
       buildPrizeStages();
       buildPrizeMirror();
     } else {
+      if (!calHiArmed) { calHiArmed = true; document.documentElement.classList.add('cal-armed'); }
+      const playPop = !calHiPlayed;
+      calHiPlayed = true;
       buildCalMirror();
+      /* the pop can only run once the parked view is actually visible (the
+         swap keeps it hidden for a beat), so .cal-in is released after the
+         view shows — see the spotSwapT callback. later opens render settled */
+      if (!playPop) {
+        const mir = slot.querySelector('.cal-mirror');
+        if (mir) mir.classList.add('cal-in');
+      }
     }
     /* beat one: the front rows exit left; beat two, just as they clear out:
        the parked sub-page slides in from the right. the timer matches the
@@ -6554,6 +6611,12 @@ return for GET ?mode=read:
         card.classList.remove('spot-leaving');
         /* the mirror measures against the slot only once visible */
         if (what === 'sched') paintSchedule();
+        /* first-ever calendar open: release the event-day pop now that the
+           parked mirror is on screen (pre-state painted while hidden) */
+        if (what === 'cal') {
+          const mir = slot.querySelector('.cal-mirror:not(.cal-in)');
+          if (mir) requestAnimationFrame(() => requestAnimationFrame(() => mir.classList.add('cal-in')));
+        }
         /* now that the parked view owns the card, reset the roll so the card
            surface is fully opaque (the pre-swap check still saw the front) */
         if (window.InfoCard) InfoCard.check();
@@ -6561,6 +6624,8 @@ return for GET ?mode=read:
     } else {
       view.hidden = false;
       card.classList.add('spot-open');
+      const mir = slot.querySelector('.cal-mirror:not(.cal-in)');
+      if (mir) mir.classList.add('cal-in');
     }
     if (window.InfoCard) InfoCard.check();
   }
@@ -7346,7 +7411,7 @@ return for GET ?mode=read:
     /* final composition nudge: the banner rides right above the dossier, so
        lifting the dossier lifts the whole bookmark+wallpaper frame with it —
        one fixed distance on every screen, the 14 px banner gap untouched */
-    var PEEK_LIFT = 40;
+    var PEEK_LIFT = 56;
     var desired = Math.max(Math.round(lvh * peek) - PEEK_LIFT, bh + 84);
     /* "close above the dossier": the banner's bottom edge rests one small gap
        above the dossier's top edge */
@@ -7354,6 +7419,10 @@ return for GET ?mode=read:
     var mid = Math.max(desired - BANNER_GAP - bh / 2, 56 + bh / 2 + 8);
     document.documentElement.style.setProperty('--wall-mid', Math.round(mid) + 'px');
     document.documentElement.style.setProperty('--wall-dy', '-' + Math.round(bh / 2) + 'px');
+    /* first real positioning: un-gate the banner (it boots invisible so it can
+       never paint at a legacy offset) — the CSS opacity transition turns this
+       flip into one simple fade-in at the final position */
+    document.documentElement.classList.add('wall-ready');
     var mtpx = Math.round(desired - naturalTop) + 'px';
     /* write only on a real change — a redundant write would itself be a jump */
     if (board.style.marginTop !== mtpx) board.style.marginTop = mtpx;
@@ -7373,39 +7442,20 @@ return for GET ?mode=read:
      there's no flash, then released immediately in the same init pass.
      one-shot, mobile only, skipped for reduced motion. */
   var dossierEntered = false;
+  /* the dossier's boot motion is a single CSS fade on #board (mobile block in
+     styles.css) — no pre-parked translate, so the first paint is already the
+     final composition and nothing slides or jumps */
   function predossierEntry() {
-    if (dossierEntered || window.innerWidth >= 961) return;
-    if (home && home.classList.contains('page-hidden')) return;
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) { dossierEntered = true; return; }
+    dossierEntered = true;
     var board = document.getElementById('board');
-    if (!board) return;
-    board.style.transition = 'none';
-    board.style.transform = 'translateY(' + WALL_BAND + 'px)';
+    if (board) { board.style.transition = ''; board.style.transform = ''; }
   }
   function animateDossierEntry() {
-    if (dossierEntered) return;
+    /* nothing to animate: the CSS fade owns the entry; just make sure no
+       leftover inline transform/transition can offset the first frames */
     var board = document.getElementById('board');
-    if (!board) { dossierEntered = true; return; }
-    if (window.innerWidth >= 961) { dossierEntered = true; return; }
-    if (home && home.classList.contains('page-hidden')) {
-      board.style.transition = ''; board.style.transform = '';
-      dossierEntered = true; return;
-    }
+    if (board) { board.style.transition = ''; board.style.transform = ''; }
     dossierEntered = true;
-    alignDossierPeek();
-    var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) { board.style.transition = ''; board.style.transform = ''; return; }
-    board.style.transition = 'transform 1s cubic-bezier(.22,1,.36,1)';
-    void board.offsetHeight;
-    board.style.transform = 'translateY(0px)';
-    var done = function () {
-      board.removeEventListener('transitionend', done);
-      board.style.transition = '';
-      board.style.transform = '';
-    };
-    board.addEventListener('transitionend', done);
-    setTimeout(done, 1200);
   }
   var rollState = 'full';
   var ticking = false;
