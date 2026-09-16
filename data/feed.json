@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sevilla",
-  "generated": "2026-09-16T22:15:21.241Z",
+  "generated": "2026-09-16T22:18:51.148Z",
   "event": {
     "id": "sev_6bmyrj",
     "name": "",
@@ -98,6 +98,17 @@
       "name": "di Iseen",
       "club": "Krimpen aan den IJssel",
       "rating": 1990,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    },
+    {
+      "id": "sev_szqy1l",
+      "firstName": "Testthis",
+      "lastName": "Out",
+      "name": "Testthis Out",
+      "club": "",
+      "rating": 1988,
       "ts": 0,
       "group": "",
       "presence": "pending"
