@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sevilla",
-  "generated": "2026-09-16T20:45:54.731Z",
+  "generated": "2026-09-16T20:46:31.420Z",
   "event": {
     "id": "sev_6bmyrj",
     "name": "",
@@ -32,6 +32,17 @@
       "name": "Mangos",
       "club": "",
       "rating": 0,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    },
+    {
+      "id": "sev_gtqgyv",
+      "firstName": "Mangos",
+      "lastName": "Carlsun",
+      "name": "Mangos Carlsun",
+      "club": "",
+      "rating": 2302,
       "ts": 0,
       "group": "",
       "presence": "pending"
