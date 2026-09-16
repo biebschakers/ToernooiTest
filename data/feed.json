@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sevilla",
-  "generated": "2026-09-16T22:18:51.148Z",
+  "generated": "2026-09-16T22:20:26.561Z",
   "event": {
     "id": "sev_6bmyrj",
     "name": "",
@@ -109,6 +109,17 @@
       "name": "Testthis Out",
       "club": "",
       "rating": 1988,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    },
+    {
+      "id": "sev_untbw1",
+      "firstName": "Idbsidb",
+      "lastName": "Dbisbdib",
+      "name": "Idbsidb Dbisbdib",
+      "club": "",
+      "rating": 1999,
       "ts": 0,
       "group": "",
       "presence": "pending"
