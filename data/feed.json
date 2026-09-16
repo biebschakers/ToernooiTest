@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sevilla",
-  "generated": "2026-09-16T20:46:38.672Z",
+  "generated": "2026-09-16T20:51:33.362Z",
   "event": {
     "id": "sev_6bmyrj",
     "name": "",
@@ -19,7 +19,7 @@
       "firstName": "Mangos",
       "lastName": "Carlson",
       "name": "Mangos Carlson",
-      "club": "",
+      "club": "Philidor Leiden",
       "rating": 2800,
       "ts": 0,
       "group": "",
@@ -43,6 +43,50 @@
       "name": "Mangos Carlsun",
       "club": "",
       "rating": 2302,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    },
+    {
+      "id": "sev_oxtf43",
+      "firstName": "Ppjjinfew",
+      "lastName": "9hjefno",
+      "name": "Ppjjinfew 9hjefno",
+      "club": "",
+      "rating": 0,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    },
+    {
+      "id": "sev_3inlfb",
+      "firstName": "Nino",
+      "lastName": "Kingma",
+      "name": "Nino Kingma",
+      "club": "RSR Ivoren Toren",
+      "rating": 1900,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    },
+    {
+      "id": "sev_57dj7e",
+      "firstName": "Nino",
+      "lastName": "Kingmaa",
+      "name": "Nino Kingmaa",
+      "club": "",
+      "rating": 0,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    },
+    {
+      "id": "sev_ud63vk",
+      "firstName": "Bdien",
+      "lastName": "Isnsin",
+      "name": "Bdien Isnsin",
+      "club": "",
+      "rating": 0,
       "ts": 0,
       "group": "",
       "presence": "pending"
