@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sevilla",
-  "generated": "2026-09-16T22:47:42.288Z",
+  "generated": "2026-09-16T22:49:40.274Z",
   "event": {
     "id": "sev_6bmyrj",
     "name": "",
@@ -13,19 +13,7 @@
   "cap": 64,
   "rounds": 9,
   "round": 0,
-  "players": [
-    {
-      "id": "sev_pz986a",
-      "firstName": "Nino",
-      "lastName": "Kingmans",
-      "name": "Nino Kingmans",
-      "club": "De Koddige Koning",
-      "rating": 501,
-      "ts": 0,
-      "group": "",
-      "presence": "pending"
-    }
-  ],
+  "players": [],
   "waitlist": [],
   "groups": [],
   "pairings": [],
