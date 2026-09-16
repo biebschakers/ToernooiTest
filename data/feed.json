@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sevilla",
-  "generated": "2026-09-16T22:41:08.083Z",
+  "generated": "2026-09-16T22:43:25.438Z",
   "event": {
     "id": "sev_6bmyrj",
     "name": "",
@@ -13,7 +13,19 @@
   "cap": 64,
   "rounds": 9,
   "round": 0,
-  "players": [],
+  "players": [
+    {
+      "id": "sev_pz986a",
+      "firstName": "Nino",
+      "lastName": "Kingma",
+      "name": "Nino Kingma",
+      "club": "RSR Ivoren Toren",
+      "rating": 1977,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    }
+  ],
   "waitlist": [],
   "groups": [],
   "pairings": [],
