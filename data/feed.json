@@ -1,0 +1,36 @@
+{
+  "ok": true,
+  "source": "sevilla",
+  "generated": "2026-09-16T20:29:08.807Z",
+  "event": {
+    "id": "sev_6bmyrj",
+    "name": "",
+    "date": "",
+    "rounds": 9,
+    "round": 0,
+    "phase": "upcoming"
+  },
+  "cap": 64,
+  "rounds": 9,
+  "round": 0,
+  "players": [
+    {
+      "id": "sev_pzjkw4",
+      "firstName": "Mangos",
+      "lastName": "Carlson",
+      "name": "Mangos Carlson",
+      "club": "",
+      "rating": 2800,
+      "ts": 0,
+      "group": "",
+      "presence": "pending"
+    }
+  ],
+  "waitlist": [],
+  "groups": [],
+  "pairings": [],
+  "standings": [],
+  "known": [],
+  "prevPodium": [],
+  "archiveIndex": []
+}
