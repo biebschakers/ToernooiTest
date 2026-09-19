@@ -1,24 +1,20 @@
 {
   "ok": true,
-  "source": "sevilla",
-  "generated": "2026-09-16T22:49:40.274Z",
+  "source": "sharly",
+  "generated": "2026-09-19T07:01:11.997Z",
   "event": {
-    "id": "sev_6bmyrj",
     "name": "",
     "date": "",
-    "rounds": 9,
+    "edition": "1",
     "round": 0,
-    "phase": "upcoming"
+    "terminated": false
   },
   "cap": 64,
-  "rounds": 9,
   "round": 0,
   "players": [],
-  "waitlist": [],
   "groups": [],
   "pairings": [],
   "standings": [],
   "known": [],
-  "prevPodium": [],
-  "archiveIndex": []
+  "prevPodium": []
 }
