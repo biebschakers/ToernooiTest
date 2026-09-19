@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sharly",
-  "generated": "2026-09-19T07:07:19.459Z",
+  "generated": "2026-09-19T07:08:42.030Z",
   "event": {
     "name": "",
     "date": "",
@@ -16,6 +16,11 @@
       "name": "Nino Kingma",
       "rating": 1700,
       "club": "Biebschakers"
+    },
+    {
+      "name": "Nno Kingma",
+      "rating": 1980,
+      "club": "Rotterdam"
     }
   ],
   "groups": [],
