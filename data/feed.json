@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sharly",
-  "generated": "2026-09-19T07:01:11.997Z",
+  "generated": "2026-09-19T07:07:19.459Z",
   "event": {
     "name": "",
     "date": "",
@@ -11,7 +11,13 @@
   },
   "cap": 64,
   "round": 0,
-  "players": [],
+  "players": [
+    {
+      "name": "Nino Kingma",
+      "rating": 1700,
+      "club": "Biebschakers"
+    }
+  ],
   "groups": [],
   "pairings": [],
   "standings": [],
