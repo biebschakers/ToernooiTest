@@ -1,7 +1,7 @@
 {
   "ok": true,
   "source": "sharly",
-  "generated": "2026-09-19T07:17:35.327Z",
+  "generated": "2026-09-19T07:18:54.707Z",
   "event": {
     "name": "",
     "date": "",
@@ -26,6 +26,11 @@
       "name": "Nemo Kingman",
       "rating": 1777,
       "club": "Bieb"
+    },
+    {
+      "name": "Test Jezelf",
+      "rating": 1700,
+      "club": "q"
     }
   ],
   "groups": [],
